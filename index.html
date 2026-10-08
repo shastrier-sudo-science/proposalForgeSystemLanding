@@ -30,6 +30,38 @@
             background: #0f0f0f;
             border: 1px solid #3f3f3f;
         }
+        /* ── Proposal Grader (scoped, self-contained) ─────────── */
+        .pg-input { width: 100%; min-height: 220px; resize: vertical; background: #0a0a0a; border: 1px solid #3f3f3f; border-radius: 1rem; color: #fff; padding: 1rem; font: inherit; font-size: 0.95rem; }
+        .pg-input::placeholder { color: #71717a; }
+        .pg-input:focus { outline: none; border-color: #f59e0b; box-shadow: 0 0 0 3px rgba(245,158,11,.25); }
+        .pg-panel { background: #09090b; border: 1px solid #27272a; border-radius: 1.5rem; padding: 1.25rem; }
+        @media (min-width: 768px) { .pg-panel { padding: 1.75rem; } }
+        .pg-scorecard { background: #09090b; border: 1px solid #27272a; border-radius: 1.5rem; padding: 1.5rem; }
+        @media (min-width: 768px) { .pg-scorecard { padding: 2rem; } }
+        .pg-row { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: center; }
+        .pg-list { display: flex; flex-direction: column; gap: 0.6rem; }
+        .pg-grid { display: grid; grid-template-columns: 1fr; gap: 0.6rem; }
+        @media (min-width: 640px) { .pg-grid { grid-template-columns: 1fr 1fr; } }
+        .pg-t-good { color: #34d399; } .pg-t-ok { color: #a3e635; } .pg-t-warn { color: #fbbf24; } .pg-t-bad { color: #f87171; }
+        .pg-b-good { border-color: rgba(52,211,153,.45) !important; background: rgba(16,185,129,.07) !important; }
+        .pg-b-ok { border-color: rgba(163,230,53,.45) !important; background: rgba(132,204,22,.07) !important; }
+        .pg-b-warn { border-color: rgba(251,191,36,.45) !important; background: rgba(245,158,11,.07) !important; }
+        .pg-b-bad { border-color: rgba(248,113,113,.45) !important; background: rgba(239,68,68,.08) !important; }
+        .pg-score-num { font-size: 3.4rem; font-weight: 800; line-height: 1; }
+        .pg-score-num span { font-size: 1.3rem; color: #71717a; font-weight: 700; }
+        .pg-chip { display: inline-block; border: 1px solid rgba(153,27,27,.6); background: rgba(69,10,10,.4); color: #fca5a5; border-radius: 999px; padding: 4px 12px; font-size: 0.72rem; margin: 0 4px 6px 0; }
+        .pg-check { display: flex; gap: 0.75rem; background: rgba(0,0,0,.35); border: 1px solid #1f1f23; border-radius: 0.75rem; padding: 0.75rem; }
+        .pg-check > i { flex-shrink: 0; }
+        .pg-ded { margin-left: 6px; font-size: 0.68rem; font-weight: 700; color: #f87171; }
+        .pg-doct { font-size: 0.7rem; color: #52525b; font-style: italic; margin-top: 2px; }
+        .pg-el { border: 1px solid #27272a; background: rgba(0,0,0,.3); border-radius: 0.75rem; padding: 0.75rem; }
+        .pg-el-hit { border-color: rgba(6,95,70,.6); background: rgba(6,78,59,.15); }
+        .pg-el-name { font-size: 0.66rem; font-weight: 800; letter-spacing: 0.12em; color: #71717a; }
+        .pg-el-q { font-size: 0.72rem; color: #a1a1aa; margin-top: 4px; }
+        .pg-btn-main { display: inline-block; background: #f59e0b; color: #000; font-weight: 700; padding: 0.85rem 1.6rem; border-radius: 0.9rem; text-decoration: none; transition: background .15s; }
+        .pg-btn-main:hover { background: #fbbf24; }
+        .pg-btn-ghost { display: inline-block; border: 1px solid #3f3f3f; color: #d4d4d8; font-weight: 600; padding: 0.85rem 1.4rem; border-radius: 0.9rem; text-decoration: none; transition: border-color .15s,color .15s; }
+        .pg-btn-ghost:hover { border-color: #71717a; color: #fff; }
     </style>
 </head>
 <body class="bg-zinc-950 text-white">
@@ -40,9 +72,12 @@
                 <div class="w-8 h-8 bg-amber-500 rounded-xl flex items-center justify-center text-xl font-bold">🔨</div>
                 <span class="text-2xl font-semibold tracking-tight">ProposalForge</span>
             </div>
-            <a href="#offer" class="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-2xl text-sm transition">
-                Unlock System
-            </a>
+            <div class="flex items-center gap-5">
+                <a href="#grader" class="text-sm font-medium text-zinc-400 hover:text-amber-400 transition hidden sm:inline">Free Grader</a>
+                <a href="#offer" class="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-2xl text-sm transition">
+                    Unlock System
+                </a>
+            </div>
         </div>
     </nav>
     <!-- Hero -->
@@ -64,6 +99,9 @@
             </a>
             <p class="mt-8 text-sm text-zinc-400 font-medium">
                 Track your next 10–20 proposals. Build your authentic baseline. Get sharper.
+            </p>
+            <p class="mt-4 text-sm">
+                <a href="#grader" class="text-amber-400 hover:text-amber-300 font-medium underline underline-offset-4">Not ready to unlock? Grade your last proposal free — 60 seconds, no signup.</a>
             </p>
             <!-- HERO IMAGE: Upload the mockup you just shared and replace the src below -->
             <div class="mt-16">
@@ -170,6 +208,280 @@
         </p>
     </div>
     </section>
+    <!-- ═══ FREE PROPOSAL GRADER — interactive Core Doctrine audit (self-contained, no dependencies) ═══ -->
+    <section id="grader" class="py-24 bg-zinc-900 border-y border-zinc-800" style="scroll-margin-top:90px;">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="text-center mb-10">
+                <span class="inline-block bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full mb-4">FREE · NO SIGNUP · RUNS ON YOUR DEVICE</span>
+                <h2 class="text-4xl font-semibold text-white mb-4">Grade Your Last Proposal in 60 Seconds</h2>
+                <p class="text-zinc-400 max-w-2xl mx-auto">Paste the proposal that got ignored. The Grader scores it 1–10 against the same Core Doctrine inside System v4.0 — the 10 behavioral rules, the 14 conversion edits, and the zero-AI-tells audit — then shows you the one fix that moves the score.</p>
+            </div>
+
+            <div class="bg-zinc-950 border border-zinc-800 rounded-3xl p-6 md:p-10 shadow-2xl">
+                <label for="pg-input" class="block text-sm font-semibold text-zinc-300 mb-2">Your proposal draft</label>
+                <textarea id="pg-input" class="pg-input" placeholder="Paste the proposal you sent that got no response…"></textarea>
+                <div class="mt-4 flex flex-wrap items-center gap-3">
+                    <button id="pg-grade-btn" class="px-8 py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-2xl transition amber-glow disabled:opacity-40 disabled:cursor-not-allowed" disabled>Run the audit →</button>
+                    <button id="pg-sample-btn" class="px-6 py-4 border border-zinc-700 hover:border-zinc-500 text-zinc-300 font-semibold rounded-2xl transition text-sm">Load a weak example</button>
+                    <span id="pg-wc" class="text-xs text-zinc-500 ml-auto" aria-live="polite">0 words</span>
+                </div>
+                <p id="pg-hint" class="mt-3 text-xs text-amber-400" hidden>Paste at least 10 words to run the audit.</p>
+            </div>
+
+            <div id="pg-results" class="mt-8 space-y-6" aria-live="polite"></div>
+
+            <p class="text-center text-zinc-500 text-xs mt-8">Nothing you paste is uploaded or stored — the audit runs entirely in your browser.</p>
+        </div>
+    </section>
+    <script>
+    (function () {
+        "use strict";
+        /* Core Doctrine engine — mirrors Proposal Forge System v4.0 (Polish v4.0 audit) */
+        var AI_TELLS = ['delve into','leverage','unlock',"in today's fast-paced world",'seamlessly','transform your','harness the power of','game-changer','revolutionize','cutting-edge','robust','empower','synergy','circle back','touch base'];
+        var HEDGES = ['just','maybe','perhaps','i think','hopefully','could','might'];
+        var RISK_REVERSAL_RE = /revise (?:at no|for free)|no additional cost|no extra cost|at no charge|money[- ]back|don'?t pay (?:until|unless|if)|guarantee|if [^.]{0,60}(?:isn'?t|is not|doesn'?t|does not)[^.]{0,40}(?:met|hit|delivered|reached)|risk (?:is|stays) (?:on|with) me|zero risk|at no cost/i;
+        var FILLER_RE = /i hope this (?:email |message )?finds you well/i;
+        var GENERIC_CTA_RE = /let me know if you have any questions/i;
+        var I_FIRST_RE = /^(i|i'?m|im|i'?ve|ive|i am|i have|my name)\b/i;
+
+        function splitSentences(t){ return t.replace(/\s+/g,' ').split(/(?<=[.!?])\s+/).map(function(s){return s.trim();}).filter(Boolean); }
+        function splitParagraphs(t){ return t.split(/\n+/).map(function(p){return p.trim();}).filter(Boolean); }
+        function esc(x){ return String(x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+        function gradeProposal(raw){
+            var text = raw.trim();
+            var lower = text.toLowerCase();
+            var words = text.match(/\S+/g) || [];
+            var wordCount = words.length;
+            var sentences = splitSentences(text);
+            var paragraphs = splitParagraphs(text);
+
+            if (wordCount < 40){
+                return { score:2, bandLabel:'Broken', bandAction:'Start over — there is not enough here to audit.', bandCloseRate:'Low', tone:'bad', checks:[], aiTells:[], elementCard:[], readyToSend:false,
+                    weakestFix:'The draft is too short to contain the 7 elements. Rewrite using the 7-Element structure: Hook, Diagnosis, Mechanism, Proof, Scope, Price, Next Step.', wordCount:wordCount };
+            }
+
+            var checks = [], deduction = 0;
+            function add(c){ deduction += c.deduction; checks.push(c); }
+
+            // 1. Zero AI tells
+            var tellsFound = [];
+            for (var i=0;i<AI_TELLS.length;i++){
+                var re = new RegExp(AI_TELLS[i].replace(/[-/\\^$*+?.()|[\]{}]/g,'\\$&'),'gi');
+                var m = lower.match(re);
+                if (m && m.length>0) tellsFound.push({phrase:AI_TELLS[i],count:m.length});
+            }
+            var tellHits = tellsFound.reduce(function(s,t){return s+t.count;},0);
+            add({ id:'ai-tells', label:'Zero AI tells', pass:tellsFound.length===0,
+                detail: tellsFound.length===0 ? 'No AI-flagged phrases detected.' : tellsFound.length+' AI-flagged phrase'+(tellsFound.length>1?'s':'')+' found. These trigger client skepticism — rewrite immediately.',
+                deduction: Math.min(tellHits*1.5,3),
+                doctrine:'These phrases signal that a machine wrote this, not a human who understood their problem.' });
+
+            // 2. Never open with "I"
+            var opensWithI = I_FIRST_RE.test(sentences[0]||'');
+            add({ id:'opener', label:'Never open with "I"', pass:!opensWithI,
+                detail: opensWithI ? 'The first sentence opens with "I". "I"-first proposals signal self-focus, not client focus.' : 'The opening leads with the client, not you.',
+                deduction: opensWithI?1:0,
+                doctrine:'You are not hired to talk about yourself. You are hired to solve the pain they are currently experiencing.' });
+
+            // 3. Hook: client's problem first
+            var firstTwo = (sentences[0]||'')+' '+(sentences[1]||'');
+            var hookClientCentered = /\byou\b|\byour\b/i.test(firstTwo);
+            add({ id:'hook', label:'Hook makes the client feel SEEN', pass:hookClientCentered,
+                detail: hookClientCentered ? "The first two sentences speak to the client's situation." : 'The opening never references the client or their problem. Swap in their exact words from the brief.',
+                deduction: hookClientCentered?0:1,
+                doctrine:'Problem-first openings build immediate relevance. The client feels seen before they feel sold.' });
+
+            // 4. "you" not "I" balance
+            var youCount = (text.match(/\byou\b|\byour\b|\byou're\b/gi)||[]).length;
+            var iCount = (text.match(/\bI\b|\bmy\b|\bme\b|\bmine\b/gi)||[]).length;
+            var clientCentered = youCount >= iCount;
+            add({ id:'you-focus', label:'Focus on "you," not "I"', pass:clientCentered,
+                detail: youCount+' client references vs '+iCount+' self-references.',
+                deduction: clientCentered?0:1,
+                doctrine:"Your proposal is a mirror for the client's situation, not a stage for your biography." });
+
+            // 5. Hedge words
+            var hedgeHits = 0;
+            for (var h=0;h<HEDGES.length;h++){
+                var hre = HEDGES[h]==='i think' ? /i think/gi : new RegExp('\\b'+HEDGES[h]+'\\b','gi');
+                var hm = lower.match(hre);
+                hedgeHits += hm ? hm.length : 0;
+            }
+            add({ id:'hedges', label:'No hedge words', pass:hedgeHits===0,
+                detail: hedgeHits===0 ? 'Certainty language throughout ("will" not "could").' : hedgeHits+' hedge word'+(hedgeHits>1?'s':'')+' ("just", "maybe", "could", "might"…) — replace with certainty.',
+                deduction: Math.min(hedgeHits*0.25,1),
+                doctrine:'Hedge words signal amateurism. Certainty signals expertise.' });
+
+            // 6. Risk reversal
+            var hasRiskReversal = RISK_REVERSAL_RE.test(text);
+            add({ id:'risk-reversal', label:'Risk is reversed', pass:hasRiskReversal,
+                detail: hasRiskReversal ? 'Explicit risk reversal found.' : 'No risk reversal. Add one line to scope: "If [key metric] isn\'t met by [milestone], I revise at no cost."',
+                deduction: hasRiskReversal?0:1,
+                doctrine:'Explicit guarantees reduce hesitation. Clients fear making a mistake. Remove that fear, and they move.' });
+
+            // 7. Price: exactly once
+            var priceMatches = text.match(/\$\s?\d[\d,]*(?:\.\d+)?/g) || [];
+            var priceOnce = priceMatches.length===1;
+            add({ id:'price', label:'Single confident price', pass:priceOnce,
+                detail: priceMatches.length===0 ? 'No price found. One confident number with justification signals value.' : priceOnce ? 'One confident price. Single numbers signal value.' : priceMatches.length+' price mentions — multiple mentions signal negotiation.',
+                deduction: priceMatches.length===0 ? 1 : priceOnce ? 0 : 0.5,
+                doctrine:'A clear anchor signals confidence. Ranges invite unnecessary negotiation and signal uncertainty.' });
+
+            // 8. Ending: one expert question
+            var lastSentence = sentences[sentences.length-1] || '';
+            var genericCta = GENERIC_CTA_RE.test(lastSentence);
+            var endsWithQuestion = lastSentence.trim().endsWith('?');
+            var endingPass = endsWithQuestion && !genericCta;
+            add({ id:'ending', label:'Ends with one expert question', pass:endingPass,
+                detail: genericCta ? 'Ends with "Let me know if you have any questions" — instant delete. End with one specific technical question instead.' : endsWithQuestion ? 'Closes with a question that invites dialogue.' : 'No closing question. Give the client a specific question to answer — it lowers the friction of response.',
+                deduction: genericCta ? 1.5 : endsWithQuestion ? 0 : 1,
+                doctrine:'Specific questions encourage dialogue and demonstrate insight. They lower the friction of response.' });
+
+            // 9. Generic filler
+            var hasFiller = FILLER_RE.test(text);
+            add({ id:'filler', label:'No generic filler', pass:!hasFiller,
+                detail: hasFiller ? '"I hope this finds you well" = instant delete. Open with the client\'s problem.' : 'No template filler detected.',
+                deduction: hasFiller?1:0,
+                doctrine:'Overly polished language triggers skepticism. Authentic, concise writing signals effort and builds trust.' });
+
+            // 10. Specific numbers
+            var hasTimeframe = /(?:within|in \d+|\d+\s*(?:hours?|days?|weeks?|months?)|%|\d+x)/i.test(text);
+            var specific = /\d/.test(text) && hasTimeframe;
+            add({ id:'specificity', label:'Specific numbers and timeframes', pass:specific,
+                detail: specific ? 'Concrete numbers and deadlines present.' : 'Add one specific number or timeframe to the mechanism: "within 48 hours" not "soon".',
+                deduction: specific?0:0.5,
+                doctrine:'Specificity creates confidence. Vagueness creates doubt.' });
+
+            // 11. Mobile scan
+            var longParagraph = paragraphs.some(function(p){ return splitSentences(p).length > 3; });
+            var tooLong = wordCount > 400;
+            add({ id:'mobile', label:'Mobile-scan friendly', pass:!longParagraph && !tooLong,
+                detail: tooLong ? wordCount+' words — keep it under 400. The client is scanning on mobile. Sixty seconds max.' : longParagraph ? 'A paragraph runs longer than 3 sentences. Break it into bullets.' : 'Scannable at '+wordCount+' words with short paragraphs.',
+                deduction: tooLong && longParagraph ? 1 : (tooLong||longParagraph) ? 0.5 : 0,
+                doctrine:'Many clients review proposals on mobile. If they cannot scan it in thirty seconds, they will not read it.' });
+
+            var score = Math.max(1, Math.min(10, Math.round(10-deduction)));
+            var band = score>=9 ? {label:'Exceptional',action:'Send immediately.',closeRate:'Strong',tone:'good'}
+                     : score>=7 ? {label:'Strong',action:'Send after quick fixes.',closeRate:'Good',tone:'ok'}
+                     : score>=5 ? {label:'Weak',action:'Do not send. Fix the weakest element.',closeRate:'Moderate',tone:'warn'}
+                     : {label:'Broken',action:'Start over using the 7-Element structure.',closeRate:'Low',tone:'bad'};
+
+            var hasBullets = /^\s*[-•*]\s+/m.test(text);
+            var elementCard = [
+                { element:'HOOK', question:'Did I lead with the hidden problem framed as loss? (2 sentences)', present: hookClientCentered && !opensWithI },
+                { element:'DIAGNOSIS', question:"Did I restate the client's words? (3–4 sentences)", present: /you (?:told|mentioned|said)|your (?:current|last|team|retention|traffic|process|audience)|as you (?:said|mentioned)/i.test(text) },
+                { element:'MECHANISM', question:'Did I explain HOW in 3 steps? (4–5 sentences)', present: /first,|step 1|my process|the process|the system|framework|here'?s how/i.test(text) },
+                { element:'PROOF', question:'Did I cite one specific result? (2 sentences)', present: /%|\d+x|from \d+ to \d+|increased|improved|grew|result/i.test(text) },
+                { element:'SCOPE', question:'Did I list exact deliverables with deadlines + risk reversal? (5–7 bullets)', present: hasBullets || /deliverables?|timeline|what this (?:does )?(?:not )?include/i.test(text) },
+                { element:'PRICE', question:'Did I give one confident number with loss/gain justification? (1 sentence)', present: priceMatches.length===1 },
+                { element:'NEXT STEP', question:'Did I ask for a yes/no response + expert question? (1 sentence)', present: endingPass || /reply|book|schedule|respond|say yes/i.test(text) }
+            ];
+
+            var weakest = null;
+            for (var c=0;c<checks.length;c++){ if (checks[c].deduction>0 && (!weakest || checks[c].deduction>weakest.deduction)) weakest = checks[c]; }
+
+            return { score:score, bandLabel:band.label, bandAction:band.action, bandCloseRate:band.closeRate, tone:band.tone,
+                checks:checks, aiTells:tellsFound, elementCard:elementCard,
+                readyToSend: elementCard.every(function(e){return e.present;}) && score>=7,
+                weakestFix: (score<9 && weakest) ? weakest.detail : null, wordCount:wordCount };
+        }
+
+        var WEAK_SAMPLE = "Hi,\n\nI hope this finds you well. I am a professional freelance writer with over 5 years of experience. I have written for many clients across many industries. I believe I would be a great fit for this project.\n\nI can leverage my expertise to seamlessly transform your content strategy. My innovative approach is a game-changer that will unlock new opportunities for your business. I utilize cutting-edge tools to deliver robust results every time.\n\nI could probably deliver this in around 2 weeks, maybe sooner depending on my workload. I charge $500 for this kind of project, though I might be able to do it for $400 if you need something simpler.\n\nI am passionate about writing and would be honored to work with you.\n\nLet me know if you have any questions!\n\nBest regards";
+
+        function el(id){ return document.getElementById(id); }
+        var input = el('pg-input'), btn = el('pg-grade-btn'), sampleBtn = el('pg-sample-btn'),
+            wc = el('pg-wc'), hint = el('pg-hint'), out = el('pg-results');
+
+        var ICON_OK = '<i class="fa-solid fa-circle-check" style="color:#34d399;font-size:1.05rem;margin-top:3px" aria-hidden="true"></i>';
+        var ICON_NO = '<i class="fa-solid fa-circle-xmark" style="color:#f87171;font-size:1.05rem;margin-top:3px" aria-hidden="true"></i>';
+
+        function render(r){
+            var h = '';
+            h += '<div class="pg-scorecard pg-b-'+r.tone+'">'
+              +  '<div class="pg-row">'
+              +    '<div style="text-align:center;flex-shrink:0">'
+              +      '<div class="pg-score-num pg-t-'+r.tone+'">'+r.score+'<span>/10</span></div>'
+              +      '<div style="font-size:.65rem;letter-spacing:.18em;color:#71717a;margin-top:4px">CONFIDENCE SCORE</div>'
+              +    '</div>'
+              +    '<div style="flex:1;min-width:240px">'
+              +      '<div class="pg-t-'+r.tone+'" style="font-size:1.3rem;font-weight:800">'+esc(r.bandLabel)+'</div>'
+              +      '<div style="color:#d4d4d8;margin-top:2px;font-size:.9rem">'+esc(r.bandAction)+'</div>'
+              +      '<div style="color:#71717a;font-size:.72rem;margin-top:6px">Expected close rate: <b style="color:#d4d4d8">'+esc(r.bandCloseRate)+'</b> · The rule: <b style="color:#f59e0b">never send below 7</b>. A 6 feels good enough. It is not.</div>'
+              +    '</div>'
+              +  '</div>';
+            if (r.weakestFix){
+                h += '<div style="margin-top:1rem;background:rgba(0,0,0,.4);border:1px solid #27272a;border-radius:.75rem;padding:.9rem">'
+                  +  '<div style="font-size:.64rem;font-weight:700;letter-spacing:.16em;color:#f59e0b;margin-bottom:3px">THE ONE FIX THAT MOVES THE SCORE</div>'
+                  +  '<div style="font-size:.85rem;color:#e4e4e7">'+esc(r.weakestFix)+'</div></div>';
+            }
+            h += '</div>';
+
+            if (r.aiTells.length){
+                h += '<div class="pg-panel" style="border-color:rgba(127,29,29,.6);background:rgba(69,10,10,.15)">'
+                  +  '<div style="font-weight:700;color:#f87171;margin-bottom:4px"><i class="fa-solid fa-triangle-exclamation" style="margin-right:6px" aria-hidden="true"></i>AI tells detected ('+r.aiTells.length+')</div>'
+                  +  '<div style="font-size:.72rem;color:#71717a;margin-bottom:.75rem">These phrases signal that a machine wrote this, not a human who understood their problem.</div>'
+                  +  '<div>'+r.aiTells.map(function(t){ return '<span class="pg-chip">\u201C'+esc(t.phrase)+'\u201D'+(t.count>1?' \u00D7'+t.count:'')+'</span>'; }).join('')+'</div></div>';
+            }
+
+            if (r.checks.length){
+                var passed = r.checks.filter(function(c){return c.pass;}).length;
+                h += '<div class="pg-panel"><div style="font-weight:700;margin-bottom:.75rem"><i class="fa-solid fa-list-check" style="color:#f59e0b;margin-right:6px" aria-hidden="true"></i>Core Doctrine audit — '+passed+'/'+r.checks.length+' passed</div>'
+                  +  '<div class="pg-list">'+r.checks.map(function(c){
+                        return '<div class="pg-check">'+(c.pass?ICON_OK:ICON_NO)
+                          +'<div><div style="font-size:.85rem;font-weight:600">'+esc(c.label)+(c.deduction>0?'<span class="pg-ded">\u2212'+c.deduction+'</span>':'')+'</div>'
+                          +'<div style="font-size:.8rem;color:#a1a1aa;margin-top:2px">'+esc(c.detail)+'</div>'
+                          +'<div class="pg-doct">'+esc(c.doctrine)+'</div></div></div>';
+                    }).join('')+'</div></div>';
+            }
+
+            if (r.elementCard.length){
+                h += '<div class="pg-panel"><div style="font-weight:700;margin-bottom:4px"><i class="fa-solid fa-clipboard-check" style="color:#f59e0b;margin-right:6px" aria-hidden="true"></i>7-Element Quick Reference Card</div>'
+                  +  '<div style="font-size:.72rem;color:#71717a;margin-bottom:.75rem">Print this. Check every proposal against it before sending.</div>'
+                  +  (r.readyToSend ? '' : '<div style="border:1px solid rgba(180,83,9,.5);background:rgba(69,26,3,.25);border-radius:.7rem;padding:.7rem;font-size:.8rem;color:#fcd34d;margin-bottom:.75rem"><i class="fa-solid fa-triangle-exclamation" style="margin-right:6px" aria-hidden="true"></i>Not ready to send — unchecked elements or score below 7.</div>')
+                  +  '<div class="pg-grid">'+r.elementCard.map(function(e){
+                        return '<div class="pg-el'+(e.present?' pg-el-hit':'')+'">'
+                          +'<div class="pg-el-name"'+(e.present?' style="color:#34d399"':'')+'>'+(e.present?'\u2611 ':'\u2610 ')+esc(e.element)+'</div>'
+                          +'<div class="pg-el-q">'+esc(e.question)+'</div></div>';
+                    }).join('')+'</div></div>';
+            }
+
+            h += '<div class="pg-panel" style="text-align:center;border-color:rgba(124,45,18,.5);background:linear-gradient(180deg,rgba(69,26,3,.25),#09090b)">'
+              +  '<div style="font-size:1.3rem;font-weight:800">The score is the diagnosis. The System is the cure.</div>'
+              +  '<div style="color:#a1a1aa;font-size:.85rem;margin:6px 0 1.1rem">System v4.0 runs this audit on every proposal you write — plus the prompts, the pricing ladder, and the Learn Route that make the next one sharper.</div>'
+              +  '<a href="#offer" class="pg-btn-main">Unlock the full System — $47 \u2192</a> '
+              +  '<a href="https://proposal-forge-black.vercel.app/?ref=landing-grader" target="_blank" rel="noopener noreferrer" class="pg-btn-ghost" style="margin-left:.5rem">Or let ProposalForge AI forge it free \u2192</a>'
+              +  '</div>';
+
+            out.innerHTML = h;
+            out.scrollIntoView({ behavior:'smooth', block:'start' });
+        }
+
+        function wcCount(){ return (input.value.trim().match(/\S+/g)||[]).length; }
+        function upd(){
+            var n = wcCount();
+            wc.textContent = n + (n===1?' word':' words') + (n>400 ? ' — over the 400-word mobile limit' : '');
+            hint.hidden = !(n>0 && n<10);
+            btn.disabled = n < 10;
+        }
+        input.addEventListener('input', upd);
+        sampleBtn.addEventListener('click', function(){ input.value = WEAK_SAMPLE; out.innerHTML=''; upd(); input.focus(); });
+        btn.addEventListener('click', function(){
+            if (wcCount() < 10) return;
+            var t = btn.textContent;
+            btn.disabled = true; btn.textContent = 'Running the doctrine…';
+            window.setTimeout(function(){
+                var r = gradeProposal(input.value);
+                out.innerHTML = '';
+                render(r);
+                btn.textContent = t;
+                upd();
+            }, 400);
+        });
+        upd();
+    })();
+    </script>
+
     <!-- What You Get (Value Stack) -->
     <section id="offer" class="py-24 bg-zinc-950">
         <div class="max-w-3xl mx-auto px-6">
@@ -372,6 +684,10 @@
                 <div>
                     <h3 class="text-xl font-bold text-white mb-2">What is the Confidence Score?</h3>
                     <p class="text-zinc-400 leading-relaxed">Polish v4.0 audits your draft and scores it 1–10. The rule is simple: never send below a 7. If it scores lower, the system tells you the single element to fix.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-2">Is the free Grader the same as the System?</h3>
+                    <p class="text-zinc-400 leading-relaxed">No — the Grader is the audit only. It scores one proposal against the Core Doctrine and shows you what to fix. The System gives you the full live-learning workflow: the Discovery, Structure, and Polish prompts, the 3-Tier Pricing Ladder, the Learn Route, and the tracking sheet — so every future proposal gets sharper, not just the one you graded.</p>
                 </div>
                 <div>
                     <h3 class="text-xl font-bold text-white mb-2">Why is it still in Beta / Data Collection?</h3>
